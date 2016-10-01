@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.JStudio.Monopoly.Field.Field;
 import com.JStudio.Monopoly.Field.fieldRepository;
+import com.JStudio.Monopoly.Field.normalField;
 import com.JStudio.Monopoly.Player.Dice;
 import com.JStudio.Monopoly.Player.Dice2;
+import com.JStudio.Monopoly.Player.Money;
 import com.JStudio.Monopoly.Player.Player;
+import com.JStudio.Monopoly.Player.PlayerRepository;
+import com.JStudio.Monopoly.Player.Property;
 import com.JStudio.Monopoly.User.User;
 
 /**
@@ -28,6 +32,9 @@ import com.JStudio.Monopoly.User.User;
 public class HomeController {
 	
 	public LinkedList<User> usersList = new LinkedList<User>();
+	public PlayerRepository playerList = new PlayerRepository();
+	public LinkedList<Field> fields = new LinkedList<Field>();
+	private int i = 0;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -53,7 +60,7 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(User user, Model model) {
 		
 		model.addAttribute(user);
@@ -65,7 +72,7 @@ public class HomeController {
 					
 		return "home";
 	}
-	
+*/	
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signup(User user, Model model) {
 		
@@ -79,20 +86,50 @@ public class HomeController {
 		
 		fieldRepository repo = new fieldRepository();
 		repo.createRepository();
-		LinkedList<Field> fields = new LinkedList<Field>();
 		fields =  (LinkedList<Field>) repo.getRepository();
 		model.addAttribute("fieldRepo", fields);
-		Player player1 = new Player(1, "Wuj Roman");
-		Player player2 = new Player(2, "Ciocia Jadzia");
-		model.addAttribute("player1", player1);
-		model.addAttribute("player2", player2);
+		if( i == 0){
+			Player player1 = new Player(1, "Wuj Roman", "red");
+			Player player2 = new Player(2, "Ciocia Jadzia", "blue");
+			playerList.addPlayer(player1);
+			playerList.addPlayer(player2);	
+			i = 1;
+		}
+		model.addAttribute("playerList", playerList);
+		model.addAttribute("test", "testPO");
 		return "playground";
 	}
 	
-	 @MessageMapping("/hello")
-	    @SendTo("/topic/add")
-	    public Dice addingNumbers(Dice2 dice) throws Exception {
-	        Thread.sleep(3000); // simulated delay       
-	        return new Dice("Dodane: " + dice.addNumbers());
+	@MessageMapping("/hello")
+    @SendTo("/topic/add")
+    public Player addingNumbers(Dice2 dice) throws Exception {
+        Thread.sleep(3000); // simulated delay    
+        int added = dice.addNumbers();
+        Player player = playerList.getPlayerList().get(dice.getPlayerNumber());
+        player.setPosition(added);
+        return player;
+    }
+	
+	@MessageMapping("/buy")
+    @SendTo("/topic/buyField")
+    public Player buyField(Property property) throws Exception {
+        Thread.sleep(3000); // simulated delay    
+        Player player = playerList.getPlayerList().get(property.getPlayerNumber());
+        normalField field = (normalField) fields.get(property.getPosition());
+        if(player.getMoney() > field.getValue()){
+        	player.addField(field);
+	        player.addMoney(-field.getValue());
 	    }
+        return player;
+    }
+	
+	@MessageMapping("/changeMoney")
+    @SendTo("/topic/playerMoney")
+    public Player changeMoney(Money money) throws Exception {
+        Thread.sleep(3000); // simulated delay    
+        Player player = playerList.getPlayerList().get(money.getPlayerNumber());
+        player.addMoney(money.getMoneyToAdd());
+        return player;
+    }
+	
 }

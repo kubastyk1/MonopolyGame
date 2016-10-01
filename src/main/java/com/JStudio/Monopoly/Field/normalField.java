@@ -12,6 +12,7 @@ public class normalField extends Field{
 		this.fieldName = name;
 		this.categoryID = categoryId;
 		this.value = value;
+		this.buttons = "buyField";
 	}
 	
 	public int getCategoryID(){

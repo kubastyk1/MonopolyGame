@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.JStudio.Monopoly.Field.Field;
+import com.JStudio.Monopoly.Field.fieldRepository;
 
 public class Player {
 
@@ -11,13 +12,15 @@ public class Player {
 	private String username;
 	private int money;
 	private int position;
+	private String color;
 	private List<Field> userFields;
 	
-	public Player(int playerNumber, String username){
+	public Player(int playerNumber, String username, String color){
 		this.playerNumber = playerNumber;
 		this.username = username;
 		money = 1500;
 		position = 0;
+		this.color = color;
 		userFields = new LinkedList<Field>();
 	}
 	
@@ -37,19 +40,29 @@ public class Player {
 		return position;
 	}
 	
+	public String getColor(){
+		return color;
+	}
 	public void setMoney(int money){
 		this.money = money;
 	}
 	
+	public void addMoney(int moneyToAdd){
+		int newMoney = this.money + moneyToAdd;
+		this.money = newMoney;
+	}
+	
 	public void setPosition(int position){
-		this.position = position;
+		this.position += position;
+		if(this.position > 39)
+			this.position = this.position - 40;
 	}
 	
 	public List<Field> getUserFields(){
 		return userFields;
 	}
 	
-	public void addField(Field newField){
-		userFields.add(newField);
+	public void addField(Field field){	
+		userFields.add(field);
 	}
 }

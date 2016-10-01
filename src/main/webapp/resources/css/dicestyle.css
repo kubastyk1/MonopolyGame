@@ -6,9 +6,11 @@
 }
 
 .wrapper {
-  max-width: 1100px;
-  width: 90%;
-  margin: 50px auto;
+  float: right;
+  max-width: 350px;
+  width: 27.5%;
+  margin-bottom: 3%;
+  background-color: #ECF0F1;
 }
 
 .die-container {
@@ -21,11 +23,11 @@
 }
 
 .die {
-	position: absolute;
+  position: absolute;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-	transition: transform 1s;
+  transition: transform 1s;
 }
 
 .die	div {
@@ -40,7 +42,7 @@
 		font-size: 4em;
 		color: #ECF0F1;
 		text-align: center;
-	  background-color: rgba(52,152,219,.8);
+	  background-color: #1ABC9C;
 	  border: 2px solid #fff;
 	  transition: background-color 0.3s ease;
 	}
@@ -86,17 +88,54 @@
 
 .roll-btn {
   display: block;
-  margin: 30px 10px 0;
+  margin: 20px 15px 0;
   padding: 0 40px;
+  width: 90%;
   height: 45px;
   line-height: 45px;
-  background: #55B3D9;
+  background: #1ABC9C;
   color: #FFF;
   font-size: 17px;
-  border: 0;
+  border: 2px solid #ECF0F1;
   outline: 0;
-  border-bottom: 4px solid darken(#55B3D9, 10%);
+  border-bottom: 4px solid darken(#1ABC9C, 10%);
   border-radius: 4px;
   transition: background-color 0.2s ease;
-  
+  cursor: pointer;
+}
+
+.buttonStyle {
+  display: block;
+  margin: 20px 15px 0;
+  padding: 0 40px;
+  width: 90%;
+  height: 45px;
+  line-height: 45px;
+  background: #1ABC9C;
+  color: #FFF;
+  font-size: 17px;
+  border: 2px solid #ECF0F1;
+  outline: 0;
+  border-bottom: 4px solid darken(#1ABC9C, 10%);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.buttonStyleDisable {
+  display: block;
+  margin: 20px 15px 0;
+  padding: 0 40px;
+  width: 90%;
+  height: 45px;
+  line-height: 45px;
+  background: #ECF0F1;
+  color: #1ABC9C;
+  font-size: 17px;
+  border: 2px solid #1ABC9C;
+  outline: 0;
+  border-bottom: 4px solid darken(#1ABC9C, 10%);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
